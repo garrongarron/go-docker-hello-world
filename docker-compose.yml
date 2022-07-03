@@ -1,0 +1,10 @@
+version: '3.5'
+services:
+  go-app:
+    container_name: go-app
+    # build: .
+    image: golang:1.16-alpine
+    command: go run main.go
+    volumes:
+      - ./:/go/src/app
+    working_dir: /go/src/app
