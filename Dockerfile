@@ -1,10 +1,17 @@
-FROM golang:1.16-alpine
+FROM golang:alpine
 
-WORKDIR /go/src/app
-COPY . /go/src/app
+WORKDIR /go/src
+# RUN GOOS=linux GOARCH=amd64
 
-# Need these for more complex Golang apps
-#RUN go get -d -v ./...
-#RUN go install -v ./...
+# pre-copy/cache go.mod for pre-downloading dependencies and only 
+# redownloading them in subsequent builds if they change
+COPY go.mod go.sum ./
 
-CMD ["go", "run", "hello-world.go"]
+RUN go mod download 
+
+# COPY . /go/src
+# RUN cd main/core &&  go build -o /core
+
+EXPOSE 8080
+
+#  CMD [ "/core" ]
